@@ -156,6 +156,7 @@ input {
     width: 100%;
     height: 30px;
     line-height: 30px;
+    margin-top: 10px;
 }
 
 .header-field-add-name-key {
@@ -252,6 +253,7 @@ input {
     width: 100%;
     height: 30px;
     line-height: 30px;
+    margin-top: 10px;
 }
 
 .body-field-add-name-key {
