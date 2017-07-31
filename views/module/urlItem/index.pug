@@ -1,0 +1,61 @@
+doctype html
+html
+  head
+    title= title
+    link(rel='stylesheet', href='/stylesheets/urlItem.css')
+  body
+    div.content
+      p #{urlItem.theUrl}
+      div.title
+        span.title-name 名称：
+        input.title-input(value=urlItem.title)
+      div.url
+        span.url-name url:
+        input.url-input(value=urlItem.url)
+      div.server
+        span.server-name 接入的url：
+        input.server-input(value=urlItem.serverUrl)
+
+      div.header-field
+        p.header-name header
+        p.header-change 字段更改
+        each item in urlItem.header
+          div.header-field-list
+            span.header-old-field 原字段:
+            input.header-old-field-input(value=item.oldKey)
+            span.header-new-field 新字段:
+            input.header-new-field-input(value=item.newKey)
+        div.header-add-field +
+
+      p.header-field-add-title 字段添加
+      div.header-field-add
+        each item in urlItem.headerAdd
+          div.header-field-add-list
+            div.header-field-add
+              span.header-field-add-name-key key:
+              input.header-field-add-input(value=item.key)
+              span.header-field-add-name-value value:
+              input.header-field-add-input(value=item.value)
+        div.header-add-field +
+
+      div.body-field
+        p.body-name body
+        p.body-change 字段更改
+        each item in urlItem.body
+          div.body-field-list
+            span.body-old-field 原字段:
+            input.body-old-field-input(value=item.oldKey)
+            span.body-new-field 新字段:
+            input.body-new-field-input(value=item.newKey)
+        div.body-add-field +
+
+      p.body-field-add-title 字段添加
+      div.body-field-add
+        each item in urlItem.bodyAdd
+          div.body-field-add-list
+            div.body-field-add
+              span.body-field-add-name-key key:
+              input.body-field-add-input(value=item.key)
+              span.body-field-add-name-value value:
+              input.body-field-add-input(value=item.value)
+        div.body-add-field +

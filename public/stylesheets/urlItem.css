@@ -1,0 +1,275 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+    color: #000;
+}
+
+li {
+    list-style: none;
+}
+span {
+    display: inline-block;
+}
+
+body {
+    padding: 30px;
+}
+
+input {
+    height: 30px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    padding-left: 10px;
+    font-size: 16px;
+}
+
+.content {
+    width: 100%;
+    height: 100%;
+}
+
+.title {
+    width: 100%;
+    height: 30px;
+    line-height: 30px;
+    font-size: 16px;
+}
+
+.title-name {
+    width: 100px;
+}
+
+.title-input {
+    width: 300px;
+}
+
+.url {
+    width: 100%;
+    height: 30px;
+    font-size: 16px;
+    margin-top: 10px;
+}
+
+.url-name {
+    width: 100px;
+}
+
+.url-input {
+    width: 300px;
+}
+
+.server {
+    width: 100%;
+    height: 30px;
+    font-size: 16px;
+    margin-top: 10px;
+}
+
+.server-name {
+    width: 100px;
+}
+
+.server-input {
+    width: 300px;
+}
+
+.header-field {
+    width: 100%;
+    overflow: hidden;
+    border-top: 1px solid #ddd;
+    margin-top: 20px;
+}
+
+.header-name {
+    font-size: 18px;
+    margin: 20px 0;
+}
+
+.header-change {
+    font-size:16px;
+    margin-top: 10px;
+}
+
+.header-field-list {
+    width: 100%;
+    overflow: hidden;
+    margin-top: 10px;
+    height: 30px;
+    line-height: 30px;
+}
+
+.header-old-field {
+    float: left;
+    width: 70px;
+    font-size: 16px;
+}
+
+.header-old-field-input {
+    float: left;
+    width: 400px;
+}
+
+.header-new-field {
+    float: left;
+    width: 70px;
+    margin-left: 10px;
+}
+
+.header-new-field-input {
+    float: left;
+    width: 400px;
+}
+
+.header-add-field {
+    width: 200px;
+    margin: 10px;
+    padding: 6px 0;
+    text-align: center;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.header-field-add-title {
+    float: left;
+    width: 100%;
+    border-top: 1px solid #ddd;
+    margin-top: 20px;
+    padding-top: 20px;
+    font-size: 18px;
+}
+
+.header-field-add {
+    width: 100%;
+    overflow: hidden;
+}
+
+.header-field-add-list {
+    width: 100%;
+    height: 30px;
+    line-height: 30px;
+}
+
+.header-field-add-name-key {
+    float: left;
+    font-size: 16px;
+    width: 70px;
+}
+
+.header-field-add-name-value {
+    float: left;
+    font-size: 16px;
+    width: 70px;
+    margin-left: 10px;
+}
+
+.header-field-add-input {
+    float: left;
+    width: 400px;
+    height: 30px;
+}
+
+.body-field {
+    width: 100%;
+    overflow: hidden;
+    border-top: 1px solid #ddd;
+    margin-top: 20px;
+}
+
+.body-name {
+    font-size: 18px;
+    margin: 20px 0;
+}
+
+.body-change {
+    font-size:16px;
+    margin-top: 10px;
+}
+
+.body-field-list {
+    width: 100%;
+    overflow: hidden;
+    margin-top: 10px;
+    height: 30px;
+    line-height: 30px;
+}
+
+.body-old-field {
+    float: left;
+    width: 70px;
+    font-size: 16px;
+}
+
+.body-old-field-input {
+    float: left;
+    width: 400px;
+}
+
+.body-new-field {
+    float: left;
+    width: 70px;
+    margin-left: 10px;
+}
+
+.body-new-field-input {
+    float: left;
+    width: 400px;
+}
+
+.body-add-field {
+    width: 200px;
+    margin: 10px;
+    padding: 6px 0;
+    text-align: center;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.body-field-add-title {
+    float: left;
+    width: 100%;
+    border-top: 1px solid #ddd;
+    margin-top: 20px;
+    padding-top: 20px;
+    font-size: 18px;
+}
+
+.body-field-add {
+    width: 100%;
+    overflow: hidden;
+}
+
+.body-field-add-list {
+    width: 100%;
+    height: 30px;
+    line-height: 30px;
+}
+
+.body-field-add-name-key {
+    float: left;
+    font-size: 16px;
+    width: 70px;
+}
+
+.body-field-add-name-value {
+    float: left;
+    font-size: 16px;
+    width: 70px;
+    margin-left: 10px;
+}
+
+.body-field-add-input {
+    float: left;
+    width: 400px;
+    height: 30px;
+}
+
