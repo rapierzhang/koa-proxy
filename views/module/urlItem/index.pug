@@ -1,11 +1,12 @@
 doctype html
 html
   head
-    title= title
+    title urlItem
     link(rel='stylesheet', href='/stylesheets/urlItem.css')
   body
     form(method='post', action=('/admin/module/urlListTransfer'))
       div.content
+        input.id(value=urlItem.id, name='id')
         div.title
           span.title-name 名称：
           input.title-input(value=urlItem.title, name='title')

@@ -1,6 +1,6 @@
 const router = require('koa-router')();
 const controller = require('./controller');
-const uuid = require('uuid').v1();
+const uuid = require('uuid');
 const Group = require('../../schema/group/index');
 const mongoose = require('mongoose');
 mongoose.Promise = require('bluebird'); // 用bluebird的promise代替nongoose的promise
@@ -12,6 +12,7 @@ router
     const groupList = await Group.find().exec()
       .then( // 异步查询
         (res) => {
+          console.log(res);
           return res;
         },
         (err) => {
@@ -25,7 +26,7 @@ router
 
 router
   .post('/indexTransfer', async (ctx, next) => {
-    const groupId = uuid.replace(/-/g, '');
+    const groupId = uuid.v1().replace(/-/g, '');
     const { groupName } = ctx.request.body;
     if (groupName) {
       const _group = new Group({
@@ -104,49 +105,79 @@ router
 router
   .post('/module/urlListTransfer', async (ctx, next) => {
     const data = ctx.request.body;
-    const title = data.title;
-    const url = data.url;
-    const serverUrl = data.serverUrl;
+    console.log(data);
+    const { title, id, url, serverUrl } = data;
     const headerFieldChange = arrToJson(data, 'headerOldFieldInput', 'headerNewFieldInput');
     const headerFieldAdd = arrToJson(data, 'headerFieldAddKey', 'headerFieldAddValue');
     const bodyFieldChange = arrToJson(data, 'bodyOldFieldInput', 'bodyNewFieldInput');
     const bodyFieldAdd = arrToJson(data, 'bodyFieldAddKey', 'bodyFieldAddValue');
+    const json = { title, id, url, serverUrl, headerFieldChange, headerFieldAdd, bodyFieldChange, bodyFieldAdd };
+    // const json = { title, id, url, serverUrl, headerFieldChange };
 
-    const json = { title, url, serverUrl, headerFieldChange, headerFieldAdd, bodyFieldChange, bodyFieldAdd };
+    console.log(json);
 
     ctx.redirect('/admin/module/urlList');
   });
 
 router.get('/module/urlItem/:id', async (ctx, next) => {
-  const theUrl = ctx.url;
-  await ctx.render('module/urlItem/index', {
-    urlItem: {
-      theUrl: ctx.url,
-      title: '测试',
-      id: 1,
-      url: '/test1/test2',
-      serverUrl: 'http://www.baidu.com',
-      header: [{userId: 'uid'}],
-      headerAdd: [{key: 'add1'}],
-      body: [{asp: 'aspirine'}],
-      bodyAdd: [{pre: 'preciou'}]
-    }
-  });
+  console.log(ctx.params.id);
+  const id = ctx.params.id === '0' ? uuid.v1().replace(/-/g, '') : ctx.params.id;
+  const uri = ctx.url;
+  console.log(id);
+  if (ctx.params.id === '0') {
+    await ctx.render('module/urlItem/index', {
+      urlItem: {
+        theUrl: uri,
+        title: '',
+        id,
+        url: '',
+        serverUrl: '',
+        header: [{'': ''}],
+        headerAdd: [{'': ''}],
+        body: [{'': ''}],
+        bodyAdd: [{'': ''}]
+      }
+    });
+  } else {
+    await ctx.render('module/urlItem/index', {
+      urlItem: {
+        theUrl: uri,
+        title: '测试',
+        id: id,
+        url: '/test1/test2',
+        serverUrl: 'http://www.baidu.com',
+        header: [{userId: 'uid'}],
+        headerAdd: [{key: 'add1'}],
+        body: [{asp: 'aspirine'}],
+        bodyAdd: [{pre: 'preciou'}]
+      }
+    });
+  }
 });
 
 
 
 function arrToJson(data, field1, field2) {
   let item = {};
-  if (typeof data[field1] != 'string') {
+  if (typeof data[field1] != 'string' && typeof data[field2] != 'string') {
     for (let i = 0, j = data[field1].length; i < j; i ++) {
-      if (data[field1][i] && data[field2][i] && data[field1][i] != '' && data[field2][i] != '') {
-        item[data[field1][i]] = data[field2][i];
+      if (i === 0) {
+        if ((!!data[field1][i] && !!data[field2][i]) || (data[field1][i] == '' && data[field2][i] == '')) {
+          item[data[field1][i]] = data[field2][i];
+        } else {
+          item[''] = '';
+        }
+      } else {
+        if ((!!data[field1][i] && !!data[field2][i]) || (data[field1][i] == '' && data[field2][i] == '')) {
+          item[data[field1][i]] = data[field2][i];
+        }
       }
     }
   } else {
-    if (data[field1] && data[field2] && data[field1] != '' && data[field2] != '') {
+    if ((!!data[field1] && !!data[field2]) || (data[field1] == '' && data[field2] == '')) {
       item[data[field1]] = data[field2];
+    } else {
+      item[''] = '';
     }
   }
   return item;
