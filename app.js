@@ -6,6 +6,8 @@ const onerror = require('koa-onerror');
 const bodyparser = require('koa-bodyparser');
 const logger = require('koa-logger');
 
+const mongoose = require('./db/mongo');
+
 const index = require('./modules/request/index');
 const admin = require('./modules/admin/index');
 

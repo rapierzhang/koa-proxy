@@ -1,0 +1,14 @@
+doctype html
+html
+  head
+    title= title
+    link(rel='stylesheet', href='/stylesheets/groupAdd.css')
+  body
+    form(method='post', action=('/admin/indexTransfer'))
+      div.content
+        p.group-name 小组名称
+        input(type='text', name='groupName').group-input
+
+        div.submit(onclick='submit()') 提交
+    script(src='/lib/jquery.min.js')
+    script(src='/javascripts/groupAdd.js')

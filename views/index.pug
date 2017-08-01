@@ -6,11 +6,13 @@ block content
   div.content
     div.sidebar
       ul.module-list
-        each item in moduleList
-          a.module-list-item
-            li.module-item #{item}
+        each item in groupList
+          li.module-item(onclick='changeList("' + item.groupId + '")') #{item.groupName}
 
-      div.module-add +
+      div.module-add(onclick='addItem()') +
 
     div.context
-      iframe.context-iframe(src='./admin/module/urlList')
+      iframe.context-iframe(src='./admin/module/urlList/0')
+
+  script(src='/lib/jquery.min.js')
+  script(src='/javascripts/index.js')

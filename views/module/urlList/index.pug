@@ -11,8 +11,10 @@ html
         span.url-list-server 外部url
       each item in urlList
         li.url-list-item
-          a.url-list-a(href='./urlItem/' + item.id)
+          a.url-list-a(href='../urlItem/' + item.id)
             span.url-list-title #{item.title}
             span.url-list-url #{item.url}
             span.url-list-server #{item.serverUrl}
+
+    a.add(href='../urlItem/0') 添加
 

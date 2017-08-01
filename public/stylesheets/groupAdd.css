@@ -1,0 +1,44 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+.content {
+    width: 400px;
+    height: 300px;
+    margin: 80px 25%;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.group-name {
+    font-size: 18px;
+    text-align: center;
+    margin-top: 30px;
+}
+
+.group-input {
+    width: 300px;
+    margin: 20px 50px;
+    height: 30px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    padding-left: 10px;
+    font-size: 18px;
+}
+
+.submit {
+    width: 200px;
+    height: 30px;
+    line-height: 30px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    text-align: center;
+    margin: 20px 100px;
+}

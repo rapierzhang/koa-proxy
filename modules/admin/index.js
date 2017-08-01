@@ -1,26 +1,64 @@
 const router = require('koa-router')();
 const controller = require('./controller');
+const uuid = require('uuid').v1();
+const Group = require('../../schema/group/index');
+const mongoose = require('mongoose');
+mongoose.Promise = require('bluebird'); // 用bluebird的promise代替nongoose的promise
 
 router.prefix('/admin');
 
-router.get('/', async (ctx, next) => {
-  await ctx.render('index', {
-    moduleList: [
-      'AAA',
-      'BBB',
-      'CCC'
-    ]
+router
+  .get('/', async (ctx, next) => {
+    const groupList = await Group.find().exec()
+      .then( // 异步查询
+        (res) => {
+          return res;
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
+    await ctx.render('index', {
+      groupList
+    });
   });
-});
-
-router.get('/login', async (ctx, next) => {
-  await ctx.render('index', {
-    title: 'login'
-  });
-});
 
 router
-  .get('/module/urlList', async (ctx, next) => {
+  .post('/indexTransfer', async (ctx, next) => {
+    const groupId = uuid.replace(/-/g, '');
+    const { groupName } = ctx.request.body;
+    if (groupName) {
+      const _group = new Group({
+        groupId,
+        groupName
+      });
+      await _group.save().then(
+        (res) => {
+          console.log(res);
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
+    };
+    ctx.redirect('/admin/module/urlList/0');
+  });
+
+router
+  .get('/login', async (ctx, next) => {
+    await ctx.render('index', {
+      title: 'login'
+    });
+  });
+
+router
+  .get('/module/groupAdd', async (ctx, next) => {
+    await ctx.render('module/groupAdd/index', {})
+  });
+
+router
+  .get('/module/urlList/:id', async (ctx, next) => {
+    const id = ctx.params;
     await ctx.render('module/urlList/index', {
       urlList: [
         {
@@ -61,16 +99,11 @@ router
         }
       ]
     });
-  })
-  .post('/module/urlList', async (ctx, next) => {
-    console.log(ctx.request.body);
-    ctx.body = 111;
   });
 
 router
   .post('/module/urlListTransfer', async (ctx, next) => {
     const data = ctx.request.body;
-    console.log(data);
     const title = data.title;
     const url = data.url;
     const serverUrl = data.serverUrl;
@@ -80,8 +113,6 @@ router
     const bodyFieldAdd = arrToJson(data, 'bodyFieldAddKey', 'bodyFieldAddValue');
 
     const json = { title, url, serverUrl, headerFieldChange, headerFieldAdd, bodyFieldChange, bodyFieldAdd };
-
-    console.log(json);
 
     ctx.redirect('/admin/module/urlList');
   });
@@ -106,7 +137,6 @@ router.get('/module/urlItem/:id', async (ctx, next) => {
 
 
 function arrToJson(data, field1, field2) {
-  let arr = [];
   let item = {};
   if (typeof data[field1] != 'string') {
     for (let i = 0, j = data[field1].length; i < j; i ++) {

@@ -247,6 +247,8 @@ input {
 .body-field-add {
     width: 100%;
     overflow: hidden;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 20px;
 }
 
 .body-field-add-list {
@@ -273,5 +275,16 @@ input {
     float: left;
     width: 400px;
     height: 30px;
+}
+
+.submit {
+    width: 200px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    background: #fff;
+    border: 1px solid #ddd;
+    cursor: pointer;
+    margin: 0 auto;
 }
 

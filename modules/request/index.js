@@ -17,7 +17,8 @@ const controller = require('./controller');
 
   arrStr.map((item) => {
     return (
-      router.get(item, controller.getRequest)
+      router
+        .get(item, controller.getRequest)
         .post(item, controller.getRequest)
     );
   });

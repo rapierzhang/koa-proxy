@@ -53,14 +53,14 @@ iframe {
   padding: 20px;
 }
 
-.module-list-item {
-  display: block;
-}
-
 .module-item {
   margin: 5px 0;
-  padding: 5px 0;
+  padding: 5px;
   cursor: pointer;
+}
+
+.module-item:hover {
+  background: #eee;
 }
 
 .module-add {
