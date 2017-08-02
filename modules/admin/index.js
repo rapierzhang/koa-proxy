@@ -12,7 +12,6 @@ router
     const groupList = await Group.find().exec()
       .then( // 异步查询
         (res) => {
-          console.log(res);
           return res;
         },
         (err) => {
@@ -161,24 +160,16 @@ function arrToJson(data, field1, field2) {
   let item = {};
   if (typeof data[field1] != 'string' && typeof data[field2] != 'string') {
     for (let i = 0, j = data[field1].length; i < j; i ++) {
-      if (i === 0) {
-        if ((!!data[field1][i] && !!data[field2][i]) || (data[field1][i] == '' && data[field2][i] == '')) {
-          item[data[field1][i]] = data[field2][i];
-        } else {
-          item[''] = '';
-        }
-      } else {
-        if ((!!data[field1][i] && !!data[field2][i]) || (data[field1][i] == '' && data[field2][i] == '')) {
-          item[data[field1][i]] = data[field2][i];
-        }
-      }
+      (!!data[field1][i] && !!data[field2][i]) || (data[field1][i] == '' && data[field2][i] == '')
+        ? item[data[field1][i]] = data[field2][i]
+        : i === 0
+          ? item[''] = ''
+          : null
     }
   } else {
-    if ((!!data[field1] && !!data[field2]) || (data[field1] == '' && data[field2] == '')) {
-      item[data[field1]] = data[field2];
-    } else {
-      item[''] = '';
-    }
+    (!!data[field1] && !!data[field2]) || (data[field1] == '' && data[field2] == '')
+      ? item[data[field1]] = data[field2]
+      : item[''] = ''
   }
   return item;
 }
