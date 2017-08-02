@@ -17,6 +17,13 @@ html
         div.server
           span.server-name 接入的url：
           input.server-input(value=urlItem.serverUrl, name='serverUrl')
+        div.method
+          span.method-name 请求方式:
+          select.method-input(name='method', value='GET')
+            option(value='post').method-option POST
+            option(value='get').method-option GET
+            option(value='put').method-option PUT
+            option(value='value').method-option DELETE
 
         div.header-field
           p.header-name header

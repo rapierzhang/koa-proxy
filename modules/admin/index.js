@@ -126,13 +126,13 @@ router
 router
   .post('/urlList/insert', async (ctx, next) => {
     const data = ctx.request.body;
-    const { title, id, url, serverUrl, groupId } = data;
+    const { title, id, url, serverUrl, groupId, method } = data;
     console.log(1, groupId);
     const headerFieldChange = arrToJson(data, 'headerOldFieldInput', 'headerNewFieldInput');
     const headerFieldAdd = arrToJson(data, 'headerFieldAddKey', 'headerFieldAddValue');
     const bodyFieldChange = arrToJson(data, 'bodyOldFieldInput', 'bodyNewFieldInput');
     const bodyFieldAdd = arrToJson(data, 'bodyFieldAddKey', 'bodyFieldAddValue');
-    const json = { title, groupId, id, url, serverUrl, headerFieldChange, headerFieldAdd, bodyFieldChange, bodyFieldAdd };
+    const json = { title, groupId, id, url, method, serverUrl, headerFieldChange, headerFieldAdd, bodyFieldChange, bodyFieldAdd };
     // const json = { title, id, url, serverUrl, headerFieldChange };
     console.log(json);
 

@@ -6,8 +6,8 @@ block content
   div.content
     div.sidebar
       ul.module-list
-        each item in groupList
-          li.module-item(onclick='changeList("' + item.groupId + '")') #{item.groupName}
+        each item, index in groupList
+          li.module-item(onclick='changeList("' + item.groupId + '","' + index + '")') #{item.groupName}
 
       div.module-add(onclick='addItem()') +
 

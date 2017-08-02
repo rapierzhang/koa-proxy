@@ -6,6 +6,7 @@ const urlListSchema = new Schema({
   id: { type: 'string', index: true }, // 添加索引
   title: 'string',
   url: 'string',
+  method: 'string',
   serverUrl: 'string',
   headerFieldChange: {},
   headerFieldAdd: {},

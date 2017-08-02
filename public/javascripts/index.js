@@ -1,5 +1,6 @@
-function changeList(key) {
+function changeList(key, index) {
   cookie.set('groupId', key);
+  cookie.set('index', index);
   $('iframe').attr('src', `./admin/urlList/${key}`);
 }
 
