@@ -4,10 +4,11 @@ html
     title= title
     link(rel='stylesheet', href='/stylesheets/groupAdd.css')
   body
-    form(method='post', action=('/admin/group/insert'))
+    form(method='post', action=('/admin/group/' + groupId + '/update'))
       div.content
         p.group-name 小组名称
-        input(type='text', name='groupName').group-input
+        input.group-id(type='text', name='groupId', value=groupId)
+        input.group-input(type='text', name='groupName' value=groupName)
 
         div.submit(onclick='submit()') 提交
     script(src='/lib/jquery.min.js')

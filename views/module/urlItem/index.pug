@@ -4,9 +4,10 @@ html
     title urlItem
     link(rel='stylesheet', href='/stylesheets/urlItem.css')
   body
-    form(method='post', action=('/admin/module/urlListTransfer'))
+    form(method='post', action=('/admin/urlList/insert'))
       div.content
         input.id(value=urlItem.id, name='id')
+        input.groupId(value=urlItem.groupId, name='groupId')
         div.title
           span.title-name 名称：
           input.title-input(value=urlItem.title, name='title')
@@ -21,25 +22,23 @@ html
           p.header-name header
           p.header-change 字段更改
           div.header-change-content
-            each item in urlItem.header
+            each value, key in urlItem.headerFieldChange
               div.header-field-list
-                each value, key in item
-                  span.header-old-field 原字段:
-                  input.header-old-field-input(value=key, name='headerOldFieldInput')
-                  span.header-new-field 新字段:
-                  input.header-new-field-input(value=value, name='headerNewFieldInput')
+                span.header-old-field 原字段:
+                input.header-old-field-input(value=key, name='headerOldFieldInput')
+                span.header-new-field 新字段:
+                input.header-new-field-input(value=value, name='headerNewFieldInput')
           div.header-add-field(onclick='addHeaderChange()') +
 
         p.header-field-add-title 字段添加
         div.header-field-add
           div.header-field-add-content
-            each item in urlItem.headerAdd
+            each value, key in urlItem.headerFieldAdd
               div.header-field-add-list
-                each value, key in item
-                  span.header-field-add-name-key key:
-                  input.header-field-add-input(value=key, name='headerFieldAddKey')
-                  span.header-field-add-name-value value:
-                  input.header-field-add-input(value=value, name='headerFieldAddValue')
+                span.header-field-add-name-key key:
+                input.header-field-add-input(value=key, name='headerFieldAddKey')
+                span.header-field-add-name-value value:
+                input.header-field-add-input(value=value, name='headerFieldAddValue')
 
           div.header-add-field(onclick='addHeaderField()') +
 
@@ -47,28 +46,26 @@ html
           p.body-name body
           p.body-change 字段更改
           div.body-change-content
-            each item in urlItem.body
+            each value, key in urlItem.bodyFieldChange
               div.body-field-list
-                each value, key in item
-                  span.body-old-field 原字段:
-                  input.body-old-field-input(value=key, name='bodyOldFieldInput')
-                  span.body-new-field 新字段:
-                  input.body-new-field-input(value=value, name='bodyNewFieldInput')
+                span.body-old-field 原字段:
+                input.body-old-field-input(value=key, name='bodyOldFieldInput')
+                span.body-new-field 新字段:
+                input.body-new-field-input(value=value, name='bodyNewFieldInput')
           div.body-add-field(onclick='addBodyChange()') +
 
         p.body-field-add-title 字段添加
         div.body-field-add
           div.body-field-add-content
-            each item in urlItem.bodyAdd
+            each value, key in urlItem.bodyFieldAdd
               div.body-field-add-list
-                each value, key in item
-                  span.body-field-add-name-key key:
-                  input.body-field-add-input(value=key, name='bodyFieldAddKey')
-                  span.body-field-add-name-value value:
-                  input.body-field-add-input(value=value, name='bodyFieldAddValue')
+                span.body-field-add-name-key key:
+                input.body-field-add-input(value=key, name='bodyFieldAddKey')
+                span.body-field-add-name-value value:
+                input.body-field-add-input(value=value, name='bodyFieldAddValue')
           div.body-add-field(onclick='addBodyField()') +
 
 
-      input.submit(type='submit', value='提交')
+      div.submit(onclick='submit()') 提交
     script(src='/lib/jquery.min.js')
     script(src='/javascripts/urlItem.js')

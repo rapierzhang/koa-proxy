@@ -1,9 +1,12 @@
 const router = require('koa-router')();
 const controller = require('./controller');
 const uuid = require('uuid');
-const Group = require('../../schema/group/index');
+
 const mongoose = require('mongoose');
 mongoose.Promise = require('bluebird'); // 用bluebird的promise代替nongoose的promise
+
+const Group = require('../../schema/group/index');
+const UrlList = require('../../schema/urlList/index');
 
 router.prefix('/admin');
 
@@ -24,7 +27,14 @@ router
   });
 
 router
-  .post('/indexTransfer', async (ctx, next) => {
+  .get('/login', async (ctx, next) => {
+    await ctx.render('index', {
+      title: 'login'
+    });
+  });
+
+router
+  .post('/group/insert', async (ctx, next) => {
     const groupId = uuid.v1().replace(/-/g, '');
     const { groupName } = ctx.request.body;
     if (groupName) {
@@ -41,115 +51,157 @@ router
         }
       );
     };
-    ctx.redirect('/admin/module/urlList/0');
-  });
-
-router
-  .get('/login', async (ctx, next) => {
-    await ctx.render('index', {
-      title: 'login'
-    });
-  });
-
-router
-  .get('/module/groupAdd', async (ctx, next) => {
+    ctx.redirect('/admin/urlList/0');
+  })
+  .get('/group/insert', async (ctx, next) => {
     await ctx.render('module/groupAdd/index', {})
   });
 
 router
-  .get('/module/urlList/:id', async (ctx, next) => {
-    const id = ctx.params;
-    await ctx.render('module/urlList/index', {
-      urlList: [
-        {
-          title: '测试',
-          id: 1,
-          url: '/test1/test2',
-          serverUrl: 'http://www.baidu.com',
-          header: {
-            userId: 'uid'
-          },
-          headerAdd: {
-            'add': 'add1'
-          },
-          body: {
-            'asp': 'aspirine'
-          },
-          bodyAdd: {
-            'pre': 'preciou'
-          }
+  .get('/group/:groupId/update', async (ctx, next) => {
+    const { groupId } = ctx.params;
+    const group = await Group.findOne({ groupId })
+      .then(
+        (res) => {
+          return res;
         },
-        {
-          title: '测试1',
-          id: 2,
-          url: '/test2/test3',
-          serverUrl: 'http://www.qq.com',
-          header: {
-            userId: 'uid1'
-          },
-          headerAdd: {
-            'add2': 'add13'
-          },
-          body: {
-            'asp4': 'aspirine5'
-          },
-          bodyAdd: {
-            'pre6': 'preciou7'
-          }
+        (err) => {
+          console.log('获取group失败');
         }
-      ]
+      );
+    await ctx.render('module/groupUpdate/index', group);
+  })
+  .post('/group/:groupId/update', async (ctx, next) => {
+    const { groupId } = ctx.params;
+    const { groupName } = ctx.request.body;
+    await Group.update({ groupId }, { groupName })
+      .then(
+        (res) => {
+          console.log('修改group成功');
+        },
+        (err) => {
+          console.log('修改group失败');
+        }
+      )
+    await ctx.redirect(`/admin/urlList/${groupId}`);
+  })
+
+router
+  .get('/group/:groupId/delete', async (ctx, next) => {
+    const { groupId } = ctx.params;
+
+    await Group.remove({ groupId })
+      .then(
+        (res) => {
+          console.log('group删除成功');
+        },
+        (err) => {
+          console.log('group删除失败');
+        }
+      )
+
+    await ctx.redirect('/admin/urlList/0');
+  });
+
+router
+  .get('/urlList/:groupId', async (ctx, next) => {
+    const { groupId } = ctx.params;
+
+    const urlList = await UrlList.find({ groupId }).exec()
+      .then(
+        (res) => {
+          return res;
+        },
+        (err) => {
+          console.log('查询urlList失败');
+        }
+      );
+
+    await ctx.render('module/urlList/index', {
+      urlList,
+      groupId
     });
   });
 
 router
-  .post('/module/urlListTransfer', async (ctx, next) => {
+  .post('/urlList/insert', async (ctx, next) => {
     const data = ctx.request.body;
-    console.log(data);
-    const { title, id, url, serverUrl } = data;
+    const { title, id, url, serverUrl, groupId } = data;
+    console.log(1, groupId);
     const headerFieldChange = arrToJson(data, 'headerOldFieldInput', 'headerNewFieldInput');
     const headerFieldAdd = arrToJson(data, 'headerFieldAddKey', 'headerFieldAddValue');
     const bodyFieldChange = arrToJson(data, 'bodyOldFieldInput', 'bodyNewFieldInput');
     const bodyFieldAdd = arrToJson(data, 'bodyFieldAddKey', 'bodyFieldAddValue');
-    const json = { title, id, url, serverUrl, headerFieldChange, headerFieldAdd, bodyFieldChange, bodyFieldAdd };
+    const json = { title, groupId, id, url, serverUrl, headerFieldChange, headerFieldAdd, bodyFieldChange, bodyFieldAdd };
     // const json = { title, id, url, serverUrl, headerFieldChange };
-
     console.log(json);
 
-    ctx.redirect('/admin/module/urlList');
+
+    await UrlList.update({ id }, json, { upsert: true })
+      .then(
+        (res) => {
+          console.log('插入或修改成功');
+        },
+        (err) => {
+          console.log('error:', err);
+        }
+      )
+
+    ctx.redirect('/admin/urlList');
   });
 
-router.get('/module/urlItem/:id', async (ctx, next) => {
-  console.log(ctx.params.id);
+router
+  .get('/urlList/:id/delete', async (ctx, next) => {
+    const { id } = ctx.params;
+    const groupId = ctx.cookies.get('groupId');
+
+    UrlList.remove({ id })
+      .then(
+        (res) => {
+          console.log('删除成功');
+        },
+        (err) => {
+          console.log('删除失败');
+        }
+      )
+
+    ctx.redirect(`/admin/urlList/${groupId}`);
+  });
+
+router
+  .get('/urlItem/:groupId/:id', async (ctx, next) => {
   const id = ctx.params.id === '0' ? uuid.v1().replace(/-/g, '') : ctx.params.id;
+  const { groupId } = ctx.params;
   const uri = ctx.url;
-  console.log(id);
   if (ctx.params.id === '0') {
     await ctx.render('module/urlItem/index', {
       urlItem: {
-        theUrl: uri,
         title: '',
+        groupId,
         id,
         url: '',
         serverUrl: '',
-        header: [{'': ''}],
-        headerAdd: [{'': ''}],
-        body: [{'': ''}],
-        bodyAdd: [{'': ''}]
+        bodyFieldAdd: { '': '' },
+        bodyFieldChange: { '': '' },
+        headerFieldAdd: { '': '' },
+        headerFieldChange: { '': '' },
       }
     });
   } else {
+    const urlItem = await UrlList.findOne({id}).exec()
+      .then(
+        (res) => {
+          return res;
+        },
+        (err) => {
+          console.log('urlItem查询失败');
+        }
+      );
+
+    console.log(urlItem);
+
     await ctx.render('module/urlItem/index', {
-      urlItem: {
-        theUrl: uri,
-        title: '测试',
-        id: id,
-        url: '/test1/test2',
-        serverUrl: 'http://www.baidu.com',
-        header: [{userId: 'uid'}],
-        headerAdd: [{key: 'add1'}],
-        body: [{asp: 'aspirine'}],
-        bodyAdd: [{pre: 'preciou'}]
-      }
+      urlItem
     });
   }
 });

@@ -40,6 +40,10 @@ input {
     display: none;
 }
 
+.groupId {
+    display: none;
+}
+
 .title {
     width: 100%;
     height: 30px;

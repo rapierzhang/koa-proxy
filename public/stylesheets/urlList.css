@@ -35,10 +35,24 @@ body {
     height: 40px;
 }
 
+.url-list-line {
+    float: left;
+    width: 90%;
+    height: 40px;
+}
+
+.url-list-operation {
+    float: left;
+    width: 10%;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+}
+
 .url-list-a {
     display: block;
     float: left;
-    width: 100%;
+    width: 90%;
     cursor: pointer;
 }
 
@@ -70,15 +84,57 @@ body {
     height: 40px;
     display: inline-block;
     padding: 10px;
+    border-right: 1px solid #ccc;
+}
+
+.url-list-delete {
+    display: inline-block;
+    float: left;
+    width: 10%;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.url-list-delete:hover {
+    background: #eee;
+}
+
+.button {
+    width: 100%;
+    float: left;
 }
 
 .add {
-    display: block;
+    float: left;
     width: 200px;
     height: 30px;
     line-height: 30px;
     border-radius: 5px;
     border: 1px solid #ddd;
     text-align: center;
-    margin: 20px auto;
+    margin: 20px;
+}
+
+.update {
+    float: left;
+    width: 200px;
+    height: 30px;
+    line-height: 30px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    text-align: center;
+    margin: 20px;
+}
+
+.delete {
+    float: left;
+    width: 200px;
+    height: 30px;
+    line-height: 30px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    text-align: center;
+    margin: 20px;
 }

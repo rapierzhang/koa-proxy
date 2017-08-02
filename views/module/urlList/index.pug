@@ -6,15 +6,23 @@ html
   body
     ul.url-list
       li.url-list-item
-        span.url-list-title 接口名称
-        span.url-list-url url
-        span.url-list-server 外部url
+        div.url-list-line
+          span.url-list-title 接口名称
+          span.url-list-url url
+          span.url-list-server 外部url
+        div.url-list-operation 操作
       each item in urlList
         li.url-list-item
-          a.url-list-a(href='../urlItem/' + item.id)
+          a.url-list-a(href='../urlItem/' + groupId + '/' +item.id)
             span.url-list-title #{item.title}
             span.url-list-url #{item.url}
             span.url-list-server #{item.serverUrl}
+          a.url-list-delete(href='/admin/urlList/' + item.id + '/delete') 删除
 
-    a.add(href='../urlItem/0') 添加
+    div.button
+      a.add(href='/admin/urlItem/' + groupId + '/0') 添加
+      a.update(href='../group/' + groupId + '/update') 修改
+      a.delete(onclick='del("' + groupId + '")') 删除
+
+    script(src='/javascripts/urlList.js')
 

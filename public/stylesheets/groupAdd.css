@@ -32,6 +32,10 @@ body {
     font-size: 18px;
 }
 
+.group-id {
+    display: none;
+}
+
 .submit {
     width: 200px;
     height: 30px;
