@@ -8,6 +8,7 @@ const urlListSchema = new Schema({
   url: 'string',
   method: 'string',
   serverUrl: 'string',
+  headerFieldAllow: [],
   headerFieldChange: {},
   headerFieldAdd: {},
   bodyFieldChange: {},

@@ -1,3 +1,10 @@
+function addHeaderAllow() {
+  const html = `
+    <input class="header-allow-input" value="" name="headerAllowField">
+  `;
+  $('.header-allow-list').append(html);
+}
+
 function addHeaderChange() {
   const html = `
     <div class="header-field-list">

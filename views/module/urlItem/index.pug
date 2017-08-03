@@ -26,7 +26,15 @@ html
             option(value='value').method-option DELETE
 
         div.header-field
-          p.header-name header
+          p.header-allow 允许的字段
+          div.header-allow-content
+
+            div.header-allow-list
+              each value in urlItem.headerFieldAllow
+                input.header-allow-input(value=value name="headerAllowField")
+
+            div.header-add-allow(onclick='addHeaderAllow()') +
+
           p.header-change 字段更改
           div.header-change-content
             each value, key in urlItem.headerFieldChange
@@ -37,17 +45,17 @@ html
                 input.header-new-field-input(value=value, name='headerNewFieldInput')
           div.header-add-field(onclick='addHeaderChange()') +
 
-        p.header-field-add-title 字段添加
-        div.header-field-add
-          div.header-field-add-content
-            each value, key in urlItem.headerFieldAdd
-              div.header-field-add-list
-                span.header-field-add-name-key key:
-                input.header-field-add-input(value=key, name='headerFieldAddKey')
-                span.header-field-add-name-value value:
-                input.header-field-add-input(value=value, name='headerFieldAddValue')
+          p.header-field-add-title 字段添加
+          div.header-field-add
+            div.header-field-add-content
+              each value, key in urlItem.headerFieldAdd
+                div.header-field-add-list
+                  span.header-field-add-name-key key:
+                  input.header-field-add-input(value=key, name='headerFieldAddKey')
+                  span.header-field-add-name-value value:
+                  input.header-field-add-input(value=value, name='headerFieldAddValue')
 
-          div.header-add-field(onclick='addHeaderField()') +
+            div.header-add-field(onclick='addHeaderField()') +
 
         div.body-field
           p.body-name body
