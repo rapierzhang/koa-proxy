@@ -1,17 +1,18 @@
 const Koa = require('koa');
 const app = new Koa();
+const views = require('koa-views');
 const json = require('koa-json');
 const onerror = require('koa-onerror');
 const bodyparser = require('koa-bodyparser');
 const logger = require('koa-logger');
-const core = require('koa2-cors');
+
+const mongoose = require('./db/mongo');
 
 const index = require('./modules/request/index');
+const admin = require('./modules/admin/index');
 
 // error handler
 onerror(app);
-
-console.log('----启动成功----');
 
 // middlewares
 app.use(bodyparser({
@@ -21,8 +22,9 @@ app.use(json());
 app.use(logger());
 app.use(require('koa-static')(__dirname + '/public'));
 
-// 设置跨域
-app.use(core());
+app.use(views(__dirname + '/views', {
+  extension: 'pug'
+}));
 
 // logger
 app.use(async (ctx, next) => {
@@ -33,8 +35,10 @@ app.use(async (ctx, next) => {
 });
 
 // routes
-app.use(index.routes(), index.allowedMethods());
+app.use(admin.routes(), admin.allowedMethods());
 
-app.listen(9000);
+app.listen(9001);
+
+console.log('----启动成功----');
 
 module.exports = app;

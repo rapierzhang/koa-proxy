@@ -1,28 +1,133 @@
 const router = require('koa-router')();
-const controller = require('./controller');
-
-// 初始化路由
-((len = 20) => {
-  let arr = [];
-  for (let i = 1; i < len; i++) {
-    arr.push([]);
-    for (let j = 0; j < i; j++) {
-      arr[i-1].push(`/:s${j}`);
-    }
-  }
-
-  let arrStr = arr.map((item) => {
-    return item.toString().replace(/,/g, '');
+const rp = require('request-promise');
+    
+router
+  .post('/test', async (ctx, next) => {
+    const headers = ctx.request.headers;
+    const body = ctx.request.body;
+    const headerFieldAdd = {};
+    const bodyFieldAdd = {};
+    
+    const { aaa,bbb,ccc } = headers;
+    const header = { aaa,ddd: bbb,ccc };
+    
+    const opt = {
+      method: 'post',
+      uri: 'https://help.huli.com/element/xiaohulist/index.json',
+      headers: Object.assign({}, header, headerFieldAdd),
+      form: Object.assign({}, body, bodyFieldAdd)
+    };
+    
+    const req = await rp(opt)
+      .then((bodyText) => {
+        console.log('[--测试--]', 'result: ', JSON.stringfy(bodyText));
+        console.loh('');
+        return bodyText;
+      })
+      .catch((err) => {
+        console.error('[--测试--]', 'error: ', JSON.stringfy(err));
+        console.log('');
+        return { errorMessage: '中转服务器错误', errorCode: 1 };
+      });
+    
+    ctx.body = req;
   });
-
-  arrStr.map((item) => {
-    return (
-      router
-        .get(item, controller.getRequest)
-        .post(item, controller.getRequest)
-    );
+      
+router
+  .post('/huli', async (ctx, next) => {
+    const headers = ctx.request.headers;
+    const body = ctx.request.body;
+    const headerFieldAdd = {};
+    const bodyFieldAdd = {};
+    
+    const {  } = headers;
+    const header = {  };
+    
+    const opt = {
+      method: 'get',
+      uri: 'https://help.huli.com/element/xiaohulist/index.json',
+      headers: Object.assign({}, header, headerFieldAdd),
+      form: Object.assign({}, body, bodyFieldAdd)
+    };
+    
+    const req = await rp(opt)
+      .then((bodyText) => {
+        console.log('[--狐狸--]', 'result: ', JSON.stringfy(bodyText));
+        console.loh('');
+        return bodyText;
+      })
+      .catch((err) => {
+        console.error('[--狐狸--]', 'error: ', JSON.stringfy(err));
+        console.log('');
+        return { errorMessage: '中转服务器错误', errorCode: 1 };
+      });
+    
+    ctx.body = req;
   });
-  console.log('路由初始化完成');
-})();
-
+      
+router
+  .post('/list', async (ctx, next) => {
+    const headers = ctx.request.headers;
+    const body = ctx.request.body;
+    const headerFieldAdd = {};
+    const bodyFieldAdd = {};
+    
+    const {  } = headers;
+    const header = {  };
+    
+    const opt = {
+      method: 'get',
+      uri: 'https://help.huli.com/element/xiaohulist/index.json',
+      headers: Object.assign({}, header, headerFieldAdd),
+      form: Object.assign({}, body, bodyFieldAdd)
+    };
+    
+    const req = await rp(opt)
+      .then((bodyText) => {
+        console.log('[--列表--]', 'result: ', JSON.stringfy(bodyText));
+        console.loh('');
+        return bodyText;
+      })
+      .catch((err) => {
+        console.error('[--列表--]', 'error: ', JSON.stringfy(err));
+        console.log('');
+        return { errorMessage: '中转服务器错误', errorCode: 1 };
+      });
+    
+    ctx.body = req;
+  });
+      
+router
+  .post('/newList', async (ctx, next) => {
+    const headers = ctx.request.headers;
+    const body = ctx.request.body;
+    const headerFieldAdd = {};
+    const bodyFieldAdd = {};
+    
+    const {  } = headers;
+    const header = {  };
+    
+    const opt = {
+      method: 'get',
+      uri: 'https://help.huli.com/element/xiaohulist/index.json',
+      headers: Object.assign({}, header, headerFieldAdd),
+      form: Object.assign({}, body, bodyFieldAdd)
+    };
+    
+    const req = await rp(opt)
+      .then((bodyText) => {
+        console.log('[--真列表--]', 'result: ', JSON.stringfy(bodyText));
+        console.loh('');
+        return bodyText;
+      })
+      .catch((err) => {
+        console.error('[--真列表--]', 'error: ', JSON.stringfy(err));
+        console.log('');
+        return { errorMessage: '中转服务器错误', errorCode: 1 };
+      });
+    
+    ctx.body = req;
+  });
+      
 module.exports = router;
+    

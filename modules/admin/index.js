@@ -3,6 +3,7 @@ const controller = require('./controller');
 const uuid = require('uuid');
 const fs = require('fs');
 const rp = require('request-promise');
+const shell = require('shelljs');
 
 const mongoose = require('mongoose');
 mongoose.Promise = require('bluebird'); // 用bluebird的promise代替nongoose的promise
@@ -129,15 +130,12 @@ router
   .post('/urlList/insert', async (ctx, next) => {
     const data = ctx.request.body;
     const { title, id, url, serverUrl, groupId, method } = data;
-    console.log(1, groupId);
     const headerFieldAllow = toArr(data, 'headerAllowField');
     const headerFieldChange = arrToJson(data, 'headerOldFieldInput', 'headerNewFieldInput');
     const headerFieldAdd = arrToJson(data, 'headerFieldAddKey', 'headerFieldAddValue');
     const bodyFieldChange = arrToJson(data, 'bodyOldFieldInput', 'bodyNewFieldInput');
     const bodyFieldAdd = arrToJson(data, 'bodyFieldAddKey', 'bodyFieldAddValue');
     const json = { title, groupId, id, url, method, serverUrl, headerFieldAllow, headerFieldChange, headerFieldAdd, bodyFieldChange, bodyFieldAdd };
-    // const json = { title, id, url, serverUrl, headerFieldChange };
-    console.log(json);
 
     await UrlList.update({ id }, json, { upsert: true })
       .then(
@@ -147,7 +145,7 @@ router
         (err) => {
           console.log('error:', err);
         }
-      )
+      );
 
     ctx.redirect('/admin/urlList');
   });
@@ -219,7 +217,7 @@ router
           return res;
         },
         (err) => {
-          console.log('失败');
+          console.log('urlList查询失败');
         }
       );
 
@@ -232,7 +230,7 @@ module.exports = router;
     const indexUrl = './modules/request/index.js';
 
     fs.writeFile(indexUrl, routeHeader, function (err) {
-      err ? console.log(err) : console.log('success');
+      err ? console.log(err) : console.log('----写入header成功----');
     });
 
     const lastNum = data.length - 1;
@@ -261,11 +259,13 @@ router
     
     const req = await rp(opt)
       .then((bodyText) => {
+        console.log('[--${title}--]', 'result: ', JSON.stringfy(bodyText));
+        console.loh('');
         return bodyText;
-        console.log('[--${title}--]', 'result: %j', bodyText);
       })
       .catch((err) => {
-        console.error('[--${title}--]', 'error: %j', err);
+        console.error('[--${title}--]', 'error: ', JSON.stringfy(err));
+        console.log('');
         return { errorMessage: '中转服务器错误', errorCode: 1 };
       });
     
@@ -274,21 +274,29 @@ router
       `;
 
       fs.appendFile(indexUrl, test, function (err) {
-        err ? console.log(err) : console.log('success1');
+        err ? console.log(err) : console.log('----写入body成功----');
       });
 
       if (index === lastNum) {
         const timer = setTimeout(() => {
           clearTimeout(timer);
           fs.appendFile(indexUrl, routeFooter, function (err) {
-            err ? console.log(err) : console.log('success1');
+            err ? console.log(err) : console.log('----生成js成功----');
           });
         }, 500);
       }
     });
-
   });
 
+router
+  .get('/restart', async (ctx, next) => {
+    // 重启pm2使生成的js生效
+    await shell.exec('pm2 restart proxy');
+    console.log('----重启pm2----');
+    ctx.body = '重启成功';
+  });
+
+// 更改字段
 function changeField(data, change) {
   let str = data.toString();
   let strChange = '';
@@ -302,6 +310,7 @@ function changeField(data, change) {
   return strChange;
 }
 
+// 两个数组组合成一个json
 function arrToJson(data, field1, field2) {
   let item = {};
   if (typeof data[field1] != 'string' && typeof data[field2] != 'string') {
@@ -320,6 +329,7 @@ function arrToJson(data, field1, field2) {
   return item;
 }
 
+// 将form提交上来的数据，保证是array
 function toArr(data, field) {
   if (data[field] != 'string') {
     return data[field];
@@ -328,6 +338,7 @@ function toArr(data, field) {
   }
 }
 
+// 排除json的空数据
 function filterJson(obj) {
   for(o in obj) {
     if(obj[o] === "" || obj[o] === undefined) {
