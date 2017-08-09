@@ -16,7 +16,7 @@ pm2 start admin.js -i 1 --name admin
 pm2 start app.js -i 2 --name proxy 
 ```
 
-## 原理
+## 说明
 
 #### 127.0.0.1:9001/admin是后台, 127.0.0.1:9000是转发平台
 #### 若端口被占用，请用 lsof -i:9000查看进程PID，然后kill掉
