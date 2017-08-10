@@ -22,7 +22,8 @@ html
     div.button
       a.add(href='/admin/urlItem/' + groupId + '/0') 添加
       a.update(href='../group/' + groupId + '/update') 修改
-      a.delete(onclick='del("' + groupId + '")') 删除
+      a.delete(onclick='del("' + groupId + '")') 删除此模块
 
+    script(src='/lib/cookie.js')
     script(src='/javascripts/urlList.js')
 

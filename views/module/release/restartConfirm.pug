@@ -1,0 +1,10 @@
+doctype html
+html
+  head
+    title= title
+    link(rel='stylesheet', href='/stylesheets/restartConfirm.css')
+  body
+    div.content
+      form(method='post', action=('/admin/restart'))
+        h2  您确认要发布吗
+        input.submit(type='submit', value='确认')

@@ -1,0 +1,40 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    width: 100px;
+    height: 100%;
+}
+
+.content {
+    position: absolute;
+    width: 400px;
+    height: 300px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    left: 50%;
+    top: 50%;
+    margin-left: -200px;
+    margin-top: -150px;
+    text-align: center;
+}
+
+h2 {
+    margin-top: 100px;
+}
+
+.submit {
+    display: inline-block;
+    text-decoration: none;
+    color: #000;
+    font-size: 16px;
+    margin-top: 40px;
+    padding: 10px 30px;
+    background: #eee;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+}

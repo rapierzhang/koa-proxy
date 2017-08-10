@@ -229,13 +229,13 @@ module.exports = router;
     `;
     const indexUrl = './modules/request/index.js';
 
-    fs.writeFile(indexUrl, routeHeader, function (err) {
+    await fs.writeFile(indexUrl, routeHeader, function (err) {
       err ? console.log(err) : console.log('----写入header成功----');
     });
 
     const lastNum = data.length - 1;
 
-    data.map((dataItem, index) => {
+    await data.map((dataItem, index) => {
       const { headerFieldAllow, headerFieldAdd, headerFieldChange, bodyFieldAdd, bodyFieldChange, title, url, serverUrl, method } = dataItem;
       const headerFieldAllowItem = headerFieldAllow.filter(item => item);
 
@@ -286,15 +286,27 @@ router
         }, 500);
       }
     });
+
+    ctx.redirect('/admin/build/finish');
   });
 
 router
-  .get('/restart', async (ctx, next) => {
+  .get('/build/finish', async (ctx, next) => {
+    await ctx.render('module/build/buildFinish', {
+      title: '代码生成完毕'
+    });
+  });
+
+router
+  .post('/restart', async (ctx, next) => {
     // 重启pm2使生成的js生效
     await shell.exec('pm2 restart proxy');
     console.log('----重启pm2----');
     ctx.body = '重启成功';
-  });
+  })
+  .get('/restart', async (ctx, next) => {
+    await ctx.render('module/release/restartConfirm');
+})
 
 // 更改字段
 function changeField(data, change) {

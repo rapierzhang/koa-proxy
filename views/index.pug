@@ -8,9 +8,13 @@ block content
       ul.module-list
         each item, index in groupList
           li.module-item(onclick='changeList("' + item.groupId + '","' + index + '")') #{item.groupName}
+            span.module-arrow →
 
       div.module-add(onclick='addItem()') +
 
+      div.sidebar-footer
+        div.build(onclick='build()') 生成
+        div.release(onclick='release()') 发布
     div.context
       iframe.context-iframe(src='./admin/urlList/0')
 
