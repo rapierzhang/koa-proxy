@@ -1,0 +1,27 @@
+doctype html
+html
+  head
+    title 注册
+    link(rel='stylesheet', href='/stylesheets/login.css')
+  body
+    h2.title 中转平台注册
+    div.content
+      form(method='post', action=('/admin/regist'))
+        div.block
+          span.label 用&nbsp;&nbsp;户&nbsp;名:
+          input.input(name='username')
+        div.block
+          span.label 密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;码:
+          input.input(name='password', type='password')
+        div.block
+          span.label 重复密码:
+          input.input(name='repass', type='password')
+        div.block
+          span.label 邮&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;箱:
+          input.input(name='mail')
+        div.button
+          div.submit(onclick='sub()') 注册
+          a.back(href='/') 后退
+
+    script(src='/lib/jquery.min.js')
+    script(src='/javascripts/login.js')

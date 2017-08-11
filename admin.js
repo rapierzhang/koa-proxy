@@ -5,12 +5,13 @@ const json = require('koa-json');
 const onerror = require('koa-onerror');
 const bodyparser = require('koa-bodyparser');
 const logger = require('koa-logger');
+const session = require('koa-session');
 
-const mongoose = require('./db/mongo');
+require('./db/mongo');
 
-const index = require('./modules/request/index');
 const admin = require('./modules/admin/index');
 
+app.keys = ['key'];
 // error handler
 onerror(app);
 
@@ -26,8 +27,13 @@ app.use(views(__dirname + '/views', {
   extension: 'pug'
 }));
 
+app.use(session(app));
+
 // logger
 app.use(async (ctx, next) => {
+  // ignore favicon
+  if (ctx.path === '/favicon.ico') return;
+
   const start = new Date();
   await next();
   const ms = new Date() - start;

@@ -2,7 +2,9 @@ extends layout
 
 block content
   div.header node中转后台
-
+  div.user
+    span.user-name 您好！#{username}
+    a.exit(href='/admin/exit') 退出
   div.content
     div.sidebar
       ul.module-list

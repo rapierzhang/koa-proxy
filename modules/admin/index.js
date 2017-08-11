@@ -4,12 +4,14 @@ const uuid = require('uuid');
 const fs = require('fs');
 const rp = require('request-promise');
 const shell = require('shelljs');
+const crypto = require('crypto');
 
 const mongoose = require('mongoose');
 mongoose.Promise = require('bluebird'); // 用bluebird的promise代替nongoose的promise
 
-const Group = require('../../schema/group/index');
-const UrlList = require('../../schema/urlList/index');
+const Group = require('../../schema/group');
+const UrlList = require('../../schema/urlList');
+const User = require('../../schema/user');
 
 router.prefix('/admin');
 
@@ -17,23 +19,79 @@ router
   .get('/', async (ctx, next) => {
     const groupList = await Group.find().exec()
       .then( // 异步查询
-        (res) => {
-          return res;
-        },
-        (err) => {
-          console.log(err);
-        }
+        res => res,
+        err => console.log(err)
       );
+    const username = ctx.session.username;
+    console.log(username);
     await ctx.render('index', {
-      groupList
+      groupList,
+      username
     });
   });
 
 router
-  .get('/login', async (ctx, next) => {
-    await ctx.render('index', {
-      title: 'login'
+  .get('/regist', async (ctx, next) => {
+    await ctx.render('module/regist/index', {
+      title: 'regist'
     });
+  })
+  .post('/regist', async (ctx, next) => {
+    const { username, password, mail } = ctx.request.body;
+    const hasUser = await User.findOne({username}).exec().then(
+      res => res,
+      err => false
+    );
+    if (!hasUser) {
+      const md5 = crypto.createHash('md5');
+      md5.update(password);
+      const _user = new User({
+        username,
+        password: md5.digest('hex'),
+        mail
+      });
+      await _user.save().then(
+        res => ctx.redirect('/admin/login'),
+        err => ctx.redirect('/admin/regist')
+      )
+    } else {
+      ctx.body = '用户名重复';
+    }
+  });
+
+router
+  .get('/login', async (ctx, next) => {
+    const hasErr = ctx.request.query.hasErr;
+    await ctx.render('module/login/index', {
+      title: 'login',
+      hasErr
+    });
+  })
+  .post('/login', async (ctx, next) => {
+    const { username, password } = ctx.request.body;
+    const userData = await User.findOne({ username }).exec().then(
+      res => res,
+      err => ctx.redirect('/admin/login')
+    );
+    if (userData) {
+      const md5 = crypto.createHash('md5');
+      md5.update(password);
+      const md5Pass = md5.digest('hex');
+      if (userData.password === md5Pass) {
+        ctx.session.username = username;
+        ctx.redirect('/admin');
+      } else {
+        ctx.redirect('/admin/login?hasErr=true');
+      }
+    } else {
+      ctx.redirect('/admin/login?hasErr=true');
+    }
+  });
+
+router
+  .get('/exit', async (ctx, next) => {
+    ctx.session.username = undefined;
+    ctx.redirect('/admin/login');
   });
 
 router
@@ -46,12 +104,8 @@ router
         groupName
       });
       await _group.save().then(
-        (res) => {
-          console.log(res);
-        },
-        (err) => {
-          console.log(err);
-        }
+        res => console.log(res),
+        err => console.log(err)
       );
     };
     ctx.redirect('/admin/urlList/0');
@@ -65,12 +119,8 @@ router
     const { groupId } = ctx.params;
     const group = await Group.findOne({ groupId })
       .then(
-        (res) => {
-          return res;
-        },
-        (err) => {
-          console.log('获取group失败');
-        }
+        res => res,
+        err => console.log('获取group失败')
       );
     await ctx.render('module/groupUpdate/index', group);
   })
@@ -79,12 +129,8 @@ router
     const { groupName } = ctx.request.body;
     await Group.update({ groupId }, { groupName })
       .then(
-        (res) => {
-          console.log('修改group成功');
-        },
-        (err) => {
-          console.log('修改group失败');
-        }
+        res => console.log('修改group成功'),
+        err => console.log('修改group失败')
       )
     await ctx.redirect(`/admin/urlList/${groupId}`);
   })
@@ -95,12 +141,8 @@ router
 
     await Group.remove({ groupId })
       .then(
-        (res) => {
-          console.log('group删除成功');
-        },
-        (err) => {
-          console.log('group删除失败');
-        }
+        res => console.log('group删除成功'),
+        err => console.log('group删除失败')
       )
 
     await ctx.redirect('/admin/urlList/0');
@@ -139,12 +181,8 @@ router
 
     await UrlList.update({ id }, json, { upsert: true })
       .then(
-        (res) => {
-          console.log('插入或修改成功');
-        },
-        (err) => {
-          console.log('error:', err);
-        }
+        res => console.log('插入或修改成功'),
+        err => console.log('error:', err)
       );
 
     ctx.redirect('/admin/urlList');
@@ -157,12 +195,8 @@ router
 
     UrlList.remove({ id })
       .then(
-        (res) => {
-          console.log('删除成功');
-        },
-        (err) => {
-          console.log('删除失败');
-        }
+        res => console.log('删除成功'),
+        err => console.log('删除失败')
       )
 
     ctx.redirect(`/admin/urlList/${groupId}`);
@@ -191,13 +225,8 @@ router
   } else {
     const urlItem = await UrlList.findOne({id}).exec()
       .then(
-        (res) => {
-          console.log(res);
-          return res;
-        },
-        (err) => {
-          console.log('urlItem查询失败');
-        }
+        res => res,
+        err => console.log('urlItem查询失败')
       );
 
     console.log(urlItem);
@@ -213,12 +242,8 @@ router
 
     const data = await UrlList.find()
       .then(
-        (res) => {
-          return res;
-        },
-        (err) => {
-          console.log('urlList查询失败');
-        }
+        res => res,
+        err => console.log('urlList查询失败')
       );
 
     const routeHeader = `const router = require('koa-router')();

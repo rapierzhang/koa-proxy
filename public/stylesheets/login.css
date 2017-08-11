@@ -1,0 +1,102 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+a {
+    text-decoration: none;
+}
+
+.title {
+    text-align: center;
+    margin-top: 100px;
+}
+
+.content {
+    width: 400px;
+    height: 300px;
+    margin: 100px auto;
+}
+
+.block {
+    width: 400px;
+    height: 30px;
+    line-height: 30px;
+    margin-top: 10px;
+}
+
+.label {
+    float: left;
+    font-size: 18px;
+    width: 90px;
+    line-height: 30px;
+}
+
+.input {
+    float: left;
+    width: 310px;
+    height: 30px;
+    padding-left: 10px;
+    font-size: 18px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.message {
+    font-size: 14px;
+    text-align: center;
+    color: #d9534f;
+    padding: 10px 0;
+    height: 40px;
+}
+
+.button {
+    float: left;
+    width: 400px;
+    height: 30px;
+    margin-top: 20px;
+}
+
+.submit {
+    float: left;
+    width: 80px;
+    height: 30px;
+    line-height: 30px;
+    border: none;
+    border-radius: 5px;
+    margin: 0 20px 0 100px;
+    background: #337ab7;
+    font-size: 16px;
+    text-align: center;
+    color: #fff;
+    cursor: pointer;
+}
+
+.regist {
+    float: left;
+    width: 80px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    border-radius: 5px;
+    margin: 0 100px 0 20px;
+    font-size: 16px;
+    background: #d9534f;
+    color: #fff;
+    cursor: pointer;
+}
+
+.back {
+    float: left;
+    width: 80px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    border-radius: 5px;
+    margin: 0 100px 0 20px;
+    font-size: 16px;
+    background: #d9534f;
+    color: #fff;
+    cursor: pointer;
+}

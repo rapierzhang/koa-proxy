@@ -34,6 +34,23 @@ iframe {
   border-bottom: 1px solid #ddd;
 }
 
+.user {
+  position: absolute;
+  right: 20px;
+  top: 30px;
+  z-index: 101;
+  height: 20px;
+  font-size: 14px;
+}
+
+.user-name {
+  margin-right: 15px;
+}
+
+.exit {
+  cursor: pointer;
+}
+
 .content {
   float: left;
   width: 100%;

@@ -1,0 +1,25 @@
+doctype html
+html
+  head
+    title 登录
+    link(rel='stylesheet', href='/stylesheets/login.css')
+  body
+    h2.title 中转平台登录
+    div.content
+      form(method='post', action=('/admin/login'))
+        div.block
+          span.label 用户名:
+          input.input(name='username')
+        div.block
+          span.label 密&nbsp;&nbsp;&nbsp;码:
+          input.input(name='password', type='password')
+        if hasErr
+          p.message 用户名或者密码错误，请重新输入
+        else
+          p.message
+        div.button
+          div.submit(onclick='sub()') 登录
+          a.regist 注册
+
+  script(src='/lib/jquery.min.js')
+  script(src='/javascripts/login.js')
