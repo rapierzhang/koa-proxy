@@ -7,4 +7,8 @@ html
     div.content
       form(method='post', action=('/admin/restart'))
         h2  您确认要发布吗
-        input.submit(type='submit', value='确认')
+        div.submit(onclick='submit()') 确认
+        div.cancle(onclick='back()') 取消
+
+    script(src='/lib/jquery.min.js')
+    script(src='/javascripts/public.js')

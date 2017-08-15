@@ -1,21 +1,7 @@
 const router = require('koa-router')();
 const controller = require('./controller');
-const uuid = require('uuid');
-const fs = require('fs');
-const rp = require('request-promise');
-const shell = require('shelljs');
-const crypto = require('crypto');
-
-const mongoose = require('mongoose');
-mongoose.Promise = require('bluebird'); // 用bluebird的promise代替nongoose的promise
-
-const Group = require('../../schema/group');
-const UrlList = require('../../schema/urlList');
-const User = require('../../schema/user');
 
 router.prefix('/admin');
-
-
 
 router
   .get('/', controller.isLogin)
@@ -23,33 +9,18 @@ router
 
 router
   .get('/regist', controller.isNotLogin)
-  .get('/regist', async (ctx, next) => {
-    await ctx.render('module/regist/index', {
-      title: 'regist'
-    });
-  })
+  .get('/regist', controller.registShow)
   .post('/regist', controller.regist);
 
 router
-  .get('/login', async (ctx, next) => {
-    const hasErr = ctx.request.query.hasErr;
-    if (ctx.session.username) {
-      ctx.redirect('/admin/');
-    } else {
-      await ctx.render('module/login/index', {
-        title: 'login',
-        hasErr
-      });
-    }
-  })
+  .get('/login', controller.loginShow)
   .post('/login', controller.login);
 
 router
-  .get('/exit', async (ctx, next) => {
-    ctx.session.username = undefined;
-    ctx.session.isLogin = undefined;
-    ctx.redirect('/admin/login');
-  });
+  .get('/exit', controller.exit);
+
+router
+  .get('/home', controller.home);
 
 router
   .get('/group/insert', controller.groupInsertShow)

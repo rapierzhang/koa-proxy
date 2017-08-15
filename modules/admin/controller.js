@@ -1,4 +1,3 @@
-const router = require('koa-router')();
 const uuid = require('uuid');
 const fs = require('fs');
 const rp = require('request-promise');
@@ -42,6 +41,12 @@ exports.root = async (ctx, next) => {
   });
 }
 
+exports.registShow = async (ctx, next) => {
+  await ctx.render('module/regist/index', {
+    title: 'regist'
+  });
+}
+
 exports.regist = async (ctx, next) => {
   const { username, password, mail } = ctx.request.body;
   const hasUser = await User.findOne({username}).exec().then(
@@ -65,6 +70,18 @@ exports.regist = async (ctx, next) => {
   }
 }
 
+exports.loginShow = async (ctx, next) => {
+  const hasErr = ctx.request.query.hasErr;
+  if (ctx.session.username) {
+    ctx.redirect('/admin/');
+  } else {
+    await ctx.render('module/login/index', {
+      title: 'login',
+      hasErr
+    });
+  }
+}
+
 exports.login = async (ctx, next) => {
   const { username, password } = ctx.request.body;
   const userData = await User.findOne({ username }).exec().then(
@@ -85,6 +102,18 @@ exports.login = async (ctx, next) => {
   } else {
     ctx.redirect('/admin/login?hasErr=true');
   }
+}
+
+exports.exit = async (ctx, next) => {
+  ctx.session.username = undefined;
+  ctx.session.isLogin = undefined;
+  ctx.redirect('/admin/login');
+}
+
+exports.home = async (ctx, next) => {
+  await ctx.render('module/home/index', {
+    title: 'home'
+  });
 }
 
 exports.groupInsertShow = async (ctx, next) => {
@@ -185,7 +214,7 @@ exports.urlListDelete = async (ctx, next) => {
     .then(
       res => console.log('删除成功'),
       err => console.log('删除失败')
-    )
+    );
 
   ctx.redirect(`/admin/urlList/${groupId}`);
 }
@@ -227,7 +256,6 @@ exports.urlListUpdate = async (ctx, next) => {
 exports.buildShow = async (ctx, next) => {
   await ctx.render('module/build/index', {});
 }
-
 
 exports.build = async (ctx, next) => {
 

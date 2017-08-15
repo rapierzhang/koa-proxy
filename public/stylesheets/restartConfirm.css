@@ -23,17 +23,32 @@ body {
 }
 
 h2 {
-    margin-top: 100px;
+    margin: 80px 0 50px 0;
 }
 
 .submit {
-    display: inline-block;
-    text-decoration: none;
-    color: #000;
+    float: left;
+    color: #fff;
     font-size: 16px;
-    margin-top: 40px;
-    padding: 10px 30px;
-    background: #eee;
+    margin: 0 20px 0 99px;
+    width: 80px;
+    height: 30px;
+    line-height: 30px;
+    background: #337ab7;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+}
+
+.cancle {
+    float: left;
+    color: #fff;
+    font-size: 16px;
+    margin: 0 99px 0 20px;
+    width: 80px;
+    height: 30px;
+    line-height: 30px;
+    background: #d9534f;
     border-radius: 5px;
     border: none;
     cursor: pointer;
