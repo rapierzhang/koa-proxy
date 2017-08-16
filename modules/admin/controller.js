@@ -34,7 +34,6 @@ exports.root = async (ctx, next) => {
       err => console.log(err)
     );
   const username = ctx.session.username;
-  console.log(username);
   await ctx.render('index', {
     groupList,
     username
@@ -303,12 +302,12 @@ router
     
     const req = await rp(opt)
       .then((bodyText) => {
-        console.log('[--${title}--]', 'result: ', JSON.stringfy(bodyText));
-        console.loh('');
+        console.log('[--${title}--]', 'result: ', JSON.stringify(bodyText));
+        console.log('');
         return bodyText;
       })
       .catch((err) => {
-        console.error('[--${title}--]', 'error: ', JSON.stringfy(err));
+        console.error('[--${title}--]', 'error: ', JSON.stringify(err));
         console.log('');
         return { errorMessage: '中转服务器错误', errorCode: 1 };
       });

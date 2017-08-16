@@ -20,12 +20,12 @@ router
     
     const req = await rp(opt)
       .then((bodyText) => {
-        console.log('[--测试--]', 'result: ', JSON.stringfy(bodyText));
-        console.loh('');
+        console.log('[--测试--]', 'result: ', JSON.stringify(bodyText));
+        console.log('');
         return bodyText;
       })
       .catch((err) => {
-        console.error('[--测试--]', 'error: ', JSON.stringfy(err));
+        console.error('[--测试--]', 'error: ', JSON.stringify(err));
         console.log('');
         return { errorMessage: '中转服务器错误', errorCode: 1 };
       });
@@ -52,12 +52,12 @@ router
     
     const req = await rp(opt)
       .then((bodyText) => {
-        console.log('[--狐狸--]', 'result: ', JSON.stringfy(bodyText));
-        console.loh('');
+        console.log('[--狐狸--]', 'result: ', JSON.stringify(bodyText));
+        console.log('');
         return bodyText;
       })
       .catch((err) => {
-        console.error('[--狐狸--]', 'error: ', JSON.stringfy(err));
+        console.error('[--狐狸--]', 'error: ', JSON.stringify(err));
         console.log('');
         return { errorMessage: '中转服务器错误', errorCode: 1 };
       });
@@ -84,12 +84,12 @@ router
     
     const req = await rp(opt)
       .then((bodyText) => {
-        console.log('[--列表--]', 'result: ', JSON.stringfy(bodyText));
-        console.loh('');
+        console.log('[--列表--]', 'result: ', JSON.stringify(bodyText));
+        console.log('');
         return bodyText;
       })
       .catch((err) => {
-        console.error('[--列表--]', 'error: ', JSON.stringfy(err));
+        console.error('[--列表--]', 'error: ', JSON.stringify(err));
         console.log('');
         return { errorMessage: '中转服务器错误', errorCode: 1 };
       });
@@ -116,12 +116,44 @@ router
     
     const req = await rp(opt)
       .then((bodyText) => {
-        console.log('[--真列表--]', 'result: ', JSON.stringfy(bodyText));
-        console.loh('');
+        console.log('[--真列表--]', 'result: ', JSON.stringify(bodyText));
+        console.log('');
         return bodyText;
       })
       .catch((err) => {
-        console.error('[--真列表--]', 'error: ', JSON.stringfy(err));
+        console.error('[--真列表--]', 'error: ', JSON.stringify(err));
+        console.log('');
+        return { errorMessage: '中转服务器错误', errorCode: 1 };
+      });
+    
+    ctx.body = req;
+  });
+      
+router
+  .post('/weather', async (ctx, next) => {
+    const headers = ctx.request.headers;
+    const body = ctx.request.body;
+    const headerFieldAdd = {};
+    const bodyFieldAdd = {};
+    
+    const {  } = headers;
+    const header = {  };
+    
+    const opt = {
+      method: 'get',
+      uri: 'http://www.weather.com.cn/data/sk/101010100.html',
+      headers: Object.assign({}, header, headerFieldAdd),
+      form: Object.assign({}, body, bodyFieldAdd)
+    };
+    
+    const req = await rp(opt)
+      .then((bodyText) => {
+        console.log('[--天气--]', 'result: ', JSON.stringify(bodyText));
+        console.log('');
+        return bodyText;
+      })
+      .catch((err) => {
+        console.error('[--天气--]', 'error: ', JSON.stringify(err));
         console.log('');
         return { errorMessage: '中转服务器错误', errorCode: 1 };
       });
